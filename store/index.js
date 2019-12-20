@@ -10,7 +10,6 @@ export const mutations = {
 }
 
 export const actions = {
-  // nuxtServerInit is called by Nuxt.js before server-rendering every page
   // このnuxtServerInitはページがレンダリングされるたびに呼び出されるよ
   nuxtServerInit ({ commit }, { req }) {
     if (req.session && req.session.authUser) {

@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <h1>ログインするとシークレットコンテンツを見ることができます！</h1>
-    <form v-if="!$store.state.authUser" @submit.prevent="login">
+    <form v-if="!authUser" @submit.prevent="loginReq">
       <p v-if="formError" class="error">
         {{ formError }}
       </p>
@@ -13,10 +13,10 @@
       </button>
     </form>
     <div v-else>
-      Hello!{{ $store.state.authUser.username }}!
+      Hello!{{ authUser.username }}!
       <pre>これはシークレットコンテンツです！、ログインしてるユーザにしか見えていません。</pre>
       <p><i>このページをリロードしてみてください、storeのstateは初期化されていないことに気づくはずです！</i></p>
-      <button @click="logout">
+      <button @click="logoutReq">
         ログアウト
       </button>
     </div>
@@ -29,6 +29,8 @@
 </template>
 
 <script>
+import {mapActions,mapGetters} from 'vuex';
+
 export default {
   data () {
     return {
@@ -38,9 +40,9 @@ export default {
     }
   },
   methods: {
-    async login () {
+    async loginReq () {
       try {
-        await this.$store.dispatch('login', {
+        await this.login({
           username: this.formUsername,
           password: this.formPassword
         })
@@ -51,13 +53,17 @@ export default {
         this.formError = e.message
       }
     },
-    async logout () {
+    async logoutReq () {
       try {
-        await this.$store.dispatch('logout')
+        await this.logout();
       } catch (e) {
         this.formError = e.message
       }
-    }
+    },
+    ...mapActions(['login','logout'])
+  },
+  computed:{
+    ...mapGetters(['authUser'])
   }
 }
 </script>

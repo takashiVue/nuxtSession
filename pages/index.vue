@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <h1>ログインするとシークレットコンテンツを見ることができます！</h1>
+    <h1>ログインするとシークレットコンテンツを見ることができます！{{username}}</h1>
     <form v-if="!authUser" @submit.prevent="loginReq">
       <p v-if="formError" class="error">
         {{ formError }}
@@ -63,6 +63,7 @@ export default {
     ...mapActions(['login','logout'])
   },
   computed:{
+    ...mapGetters('user',['username']),
     ...mapGetters(['authUser'])
   }
 }
